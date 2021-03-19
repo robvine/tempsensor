@@ -54,4 +54,4 @@ while True:
     client.on_log=on_log
     #time.sleep(4) # wait
     client.loop_stop() #stop the loop
-    time.sleep(10)
+    time.sleep(60)
