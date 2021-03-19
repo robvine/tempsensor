@@ -1,23 +1,19 @@
 #! /usr/bin/python3
 
-from gpiozero import Button
 import time
-import math
+#import math
 import bme280_sensor
-import wind_direction_byo
-import statistics
-import database
-from datetime import datetime
-from datetime import date
-import requests
+#import statistics
+#from datetime import datetime
+#from datetime import date
+#import requests
 import paho.mqtt.client as mqtt
-import board
-import busio
+#import board
+#import busio
 
-db_interval = 300
 hasl = 743
-sl_pressure = []
-today = date.today()
+inside_pressure = []
+#today = date.today()
 broker_address="192.168.1.3"
 username = "mqttuser"
 password = "mqttpass"
@@ -34,7 +30,9 @@ def on_log(client, userdata, level, buf):
 #Loop to measure wind speed and report at 5-second intervals   
 
 while True:
-    start_time = time.time()
+    #start_time = time.time()
+    inside_humidity, pressure, inside_temp = bme280_sensor.read_all()
+    inside_pressure = pressure + ((pressure * 9.80665 * hasl)/(287 * (273 + inside_temp + (hasl/400))))
 
     print("Humidity:",inside_humidity)
     print("Pressure:",inside_pressure)
@@ -56,4 +54,4 @@ while True:
     client.on_log=on_log
     #time.sleep(4) # wait
     client.loop_stop() #stop the loop
-    time.sleep(300)
+    time.sleep(10)
